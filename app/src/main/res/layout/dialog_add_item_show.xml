@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    tools:context=".ui.MainActivity">
+
+    <com.google.android.material.textfield.TextInputEditText
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        android:textSize="18dp"
+        android:id="@+id/edit_text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Product Name"
+        />
+
+    <com.google.android.material.textfield.TextInputEditText
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:textSize="18dp"
+        android:id="@+id/edit_text_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Description"
+        android:inputType="textMultiLine"
+        android:layout_marginTop="5dp"
+        />
+
+
+    <it.sephiroth.android.library.numberpicker.NumberPicker
+        android:id="@+id/numberPicker1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button"
+        android:id="@+id/material_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="save"/>
+
+</LinearLayout>
