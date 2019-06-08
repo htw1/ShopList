@@ -1,35 +1,42 @@
-package com.htw.shopexample;
-
+package com.htw.shopexample.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+import com.htw.shopexample.R;
+import com.htw.shopexample.db.Note;
 
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.NoteHolder>  {
 
-    private List<com.htw.shopexample.Note> notes = new ArrayList<>();
+    private List<Note> notes = new ArrayList<>();
 
     @NonNull
     @Override
     public NoteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.note_item, parent,false);
+                .inflate(R.layout.note_item_history, parent,false);
         return new NoteHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NoteHolder holder, int position) {
-            com.htw.shopexample.Note currentNote = notes.get(position);
-            holder.title.setText(currentNote.getTitle());
-            holder.desc.setText(currentNote.getDesc());
-            holder.priority.setText(String.valueOf(currentNote.getPriority()));
+
+        Note currentNote = notes.get(position);
+        //Date format
+        SimpleDateFormat myFormat = new SimpleDateFormat("EEEE,  d MMMM, HH:mm");
+        Date date = currentNote.getCreateDate();
+        String outputDateStr =myFormat.format(date);
+
+        holder.title.setText(currentNote.getTitle());
+        holder.date.setText(outputDateStr);
+        holder.priority.setText(String.valueOf(currentNote.getPriority()));
 
     }
 
@@ -38,30 +45,28 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
         return notes.size();
     }
 
-    public void setNotes (List<com.htw.shopexample.Note> notes){
+    public void setNotes (List<Note> notes){
 
         this.notes = notes;
         notifyDataSetChanged();
     }
 
-    public com.htw.shopexample.Note getNotePossition (int possition){
+    public Note getNotePossition (int possition){
         return notes.get(possition);
     }
-
 
     class NoteHolder extends RecyclerView.ViewHolder{
 
         private TextView title;
-        private TextView desc;
+        private TextView date;
         private TextView priority;
-        private CardView cardViewColor;
 
         public NoteHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.text_view_title);
-            desc = itemView.findViewById(R.id.text_view_description);
+            date = itemView.findViewById(R.id.text_view_description);
             priority = itemView.findViewById(R.id.text_view_priority);
-            cardViewColor = itemView.findViewById(R.id.card_view);
+
         }
     }
 

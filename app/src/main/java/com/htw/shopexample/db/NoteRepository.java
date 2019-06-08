@@ -1,77 +1,74 @@
-package com.htw.shopexample;
-
+package com.htw.shopexample.db;
 import android.app.Application;
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
-
 import androidx.lifecycle.LiveData;
 import java.util.List;
 
 public class NoteRepository  {
 
-    private com.htw.shopexample.NoteDao noteDao;
-    private LiveData<List<com.htw.shopexample.Note>> allNotes;
-    private LiveData<List<com.htw.shopexample.Note>> allNotesSorted;
+    private NoteDao noteDao;
+    private LiveData<List<Note>> allNotes;
+    private LiveData<List<Note>> allNotesSorted;
 
-    public LiveData<List<com.htw.shopexample.Note>> getAllNotesSorted() {
+    public LiveData<List<Note>> getAllNotesSorted() {
         return allNotesSorted;
     }
 
     public NoteRepository(Application application) {
         super();
 
-        com.htw.shopexample.NoteDatabase database = com.htw.shopexample.NoteDatabase.getInstance(application);
+        NoteDatabase database = NoteDatabase.getInstance(application);
         noteDao = database.noteDao();
         allNotes = noteDao.getAllNotes("-1 day");
         allNotesSorted = noteDao.getAllNotesSorted();
     }
 
-    public void insert (com.htw.shopexample.Note note){
+    public void insert (Note note){
         new insertNoteAsynTask(noteDao).execute(note);
     }
 
-    public void update (com.htw.shopexample.Note note){
+    public void update (Note note){
         new uploadNoteAsynTask(noteDao).execute(note);
     }
 
-    public  void delete (com.htw.shopexample.Note note){new deleteNoteAsynTask(noteDao).execute(note);}
+    public  void delete (Note note){new deleteNoteAsynTask(noteDao).execute(note);}
 
-    public void deleteAll (com.htw.shopexample.Note note){
+    public void deleteAll (Note note){
         new deleteAllNotesNoteAsynTask(noteDao).execute();
     }
 
 
-    public LiveData<List<com.htw.shopexample.Note>> getAllNotes() {
+    public LiveData<List<Note>> getAllNotes() {
         return allNotes;
     }
 
     // I
-    private static class insertNoteAsynTask extends AsyncTask <com.htw.shopexample.Note,Void, Void>{
+    private static class insertNoteAsynTask extends AsyncTask<Note,Void, Void> {
 
-        private com.htw.shopexample.NoteDao noteDao;
+        private NoteDao noteDao;
 
-        public insertNoteAsynTask(com.htw.shopexample.NoteDao noteDao) {
+        public insertNoteAsynTask(NoteDao noteDao) {
             this.noteDao = noteDao;
         }
 
         @Override
-        protected Void doInBackground(com.htw.shopexample.Note... notes) {
+        protected Void doInBackground(Note... notes) {
             noteDao.insert(notes[0]);
             return null;
         }
     }
 
     // II
-    private static class uploadNoteAsynTask extends AsyncTask <com.htw.shopexample.Note,Void, Void>{
+    private static class uploadNoteAsynTask extends AsyncTask <Note,Void, Void>{
 
-        private com.htw.shopexample.NoteDao noteDao;
+        private NoteDao noteDao;
 
-        public uploadNoteAsynTask(com.htw.shopexample.NoteDao noteDao) {
+        public uploadNoteAsynTask(NoteDao noteDao) {
             this.noteDao = noteDao;
         }
 
         @Override
-        protected Void doInBackground(com.htw.shopexample.Note... notes) {
+        protected Void doInBackground(Note... notes) {
             noteDao.update(notes[0]);
             return null;
         }
@@ -79,16 +76,16 @@ public class NoteRepository  {
 
 
     // III
-    private static class deleteNoteAsynTask extends AsyncTask <com.htw.shopexample.Note,Void, Void>{
+    private static class deleteNoteAsynTask extends AsyncTask <Note,Void, Void>{
 
-        private com.htw.shopexample.NoteDao noteDao;
+        private NoteDao noteDao;
 
-        public deleteNoteAsynTask(com.htw.shopexample.NoteDao noteDao) {
+        public deleteNoteAsynTask(NoteDao noteDao) {
             this.noteDao = noteDao;
         }
 
         @Override
-        protected Void doInBackground(com.htw.shopexample.Note... notes) {
+        protected Void doInBackground(Note... notes) {
             noteDao.delete(notes[0]);
             return null;
         }
@@ -96,16 +93,16 @@ public class NoteRepository  {
 
 
     // IV
-    private static class deleteAllNotesNoteAsynTask extends AsyncTask <com.htw.shopexample.Note,Void, Void>{
+    private static class deleteAllNotesNoteAsynTask extends AsyncTask <Note,Void, Void>{
 
-        private com.htw.shopexample.NoteDao noteDao;
+        private NoteDao noteDao;
 
-        public deleteAllNotesNoteAsynTask(com.htw.shopexample.NoteDao noteDao) {
+        public deleteAllNotesNoteAsynTask(NoteDao noteDao) {
             this.noteDao = noteDao;
         }
 
         @Override
-        protected Void doInBackground(com.htw.shopexample.Note... notes) {
+        protected Void doInBackground(Note... notes) {
             noteDao.deleteAllNotes();
             return null;
         }

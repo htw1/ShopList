@@ -1,12 +1,9 @@
-package com.htw.shopexample;
-
+package com.htw.shopexample.db;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
-
 import com.htw.shopexample.util.TimestampConverter;
-
 import java.util.Date;
 
 @Entity(tableName = "note_table")

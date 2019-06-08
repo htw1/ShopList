@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApp">
-        <activity android:name=".ui.ArchivedActivity"
+        <activity android:name=".ui.HistoryActivity"
             android:label="History List"></activity>
         <activity android:name=".ui.MainActivity"
             android:label="Shop List">

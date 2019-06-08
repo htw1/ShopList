@@ -1,10 +1,7 @@
 package com.htw.shopexample.ui;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,37 +12,52 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.htw.shopexample.Note;
-import com.htw.shopexample.NoteAdapter;
+import com.htw.shopexample.db.Note;
 import com.htw.shopexample.NoteViewModel;
 import com.htw.shopexample.R;
-
-import java.util.Calendar;
+import com.htw.shopexample.adapter.MainAdapter;
 import java.util.Date;
-import java.util.List;
-
 import it.sephiroth.android.library.numberpicker.NumberPicker;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity   {
 
     private NoteViewModel noteViewModel;
-    NumberPicker numberpicker;
+    private NumberPicker numberpicker;
+
+    public static int index = -1;
+    public static int top = -1;
+    LinearLayoutManager layoutManager;
+    RecyclerView recyclerView;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //read current recyclerview position
+        index = layoutManager.findFirstVisibleItemPosition();
+        View v = recyclerView.getChildAt(0);
+        top = (v == null) ? 0 : (v.getTop() - recyclerView.getPaddingTop());
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        //set recyclerview position
+        if(index != -1)
+        {
+            layoutManager.scrollToPositionWithOffset( index, top);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +67,13 @@ public class MainActivity extends AppCompatActivity {
         noteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
 
         //RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager((new LinearLayoutManager(this)));
+        recyclerView = findViewById(R.id.recyclerView);
+        layoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager((layoutManager));
         recyclerView.setHasFixedSize(true);
 
-        NoteAdapter adapter = new NoteAdapter();
+        MainAdapter adapter = new MainAdapter();
         recyclerView.setAdapter(adapter);
 
         FloatingActionButton myFab = findViewById(R.id.button_add);
@@ -93,8 +107,10 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Delete", Toast.LENGTH_SHORT).show();
                     noteViewModel.delete(adapter.getNotePossition(viewHolder.getAdapterPosition()));
                 } else if (direction == ItemTouchHelper.LEFT) {
+
                     viewHolder.itemView.setBackgroundColor(Color.parseColor("#00e676"));
                     adapter.notifyDataSetChanged();
+
                 }
             }
 
@@ -125,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent myIntent = new Intent(MainActivity.this, ArchivedActivity.class);
+        Intent myIntent = new Intent(MainActivity.this, HistoryActivity.class);
         MainActivity.this.startActivity(myIntent);
         return false;
 
