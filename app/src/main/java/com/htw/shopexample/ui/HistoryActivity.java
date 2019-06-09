@@ -18,7 +18,7 @@ public class HistoryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_archived);
+        setContentView(R.layout.activity_history);
 
         noteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
 

@@ -56,12 +56,18 @@ public class MainAdapter extends ListAdapter<Note, MainAdapter.NoteHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull NoteHolder holder, int position) {
+
         Note currentNote = getItem(position);
         holder.title.setText(currentNote.getTitle());
         holder.desc.setText(currentNote.getDesc());
         holder.priority.setText(String.valueOf(currentNote.getPriority()));
+
         if (getNotePossition(position).isMarkedTask() == true) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#00e676"));
+            holder.title.setTextColor(Color.parseColor("#ffffff"));
+            holder.desc.setTextColor(Color.parseColor("#ffffff"));
+            holder.priority.setTextColor(Color.parseColor("#ffffff"));
+
         }
     }
 

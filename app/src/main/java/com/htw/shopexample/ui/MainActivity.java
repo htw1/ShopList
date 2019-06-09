@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int TYPE_CAROUSEL = 0;
     private NoteViewModel noteViewModel;
     private NumberPicker numberpicker;
     private ItemTouchHelper ItemTouchHelper;
@@ -61,9 +63,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         MainAdapter adapter = new MainAdapter();
+
+        recyclerView.getRecycledViewPool().setMaxRecycledViews(TYPE_CAROUSEL, 0);
         recyclerView.setAdapter(adapter);
 
+
         FloatingActionButton myFab = findViewById(R.id.button_add);
+        myFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
+
         myFab.setOnClickListener(v -> {
 
             ViewDialog alert = new ViewDialog();
@@ -77,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         });
 
-
         ItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
@@ -90,14 +96,14 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 if (direction == ItemTouchHelper.RIGHT) {
 
+                    noteViewModel.delete(noteList.get(viewHolder.getLayoutPosition()));
                     Toast.makeText(MainActivity.this, "Delete", Toast.LENGTH_SHORT).show();
-                    noteViewModel.delete(adapter.getNotePossition(viewHolder.getAdapterPosition()));
 
                 } else if (direction == ItemTouchHelper.LEFT) {
 
-                    viewHolder.itemView.setBackgroundColor(Color.parseColor("#00e676"));
                     noteViewModel.update(noteList.get(viewHolder.getLayoutPosition()).getId(), true);
-
+                    adapter.getNotePossition(viewHolder.getAdapterPosition()).isMarkedTask();
+                    viewHolder.itemView.setBackgroundColor(Color.parseColor("#00e676"));
                     adapter.notifyDataSetChanged();
                 }
             }
@@ -134,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
 
     }
+
 
     public class ViewDialog {
 
