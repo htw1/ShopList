@@ -13,7 +13,6 @@ public abstract class NoteDatabase extends RoomDatabase {
     private static NoteDatabase instanse;
     public abstract NoteDao noteDao();
 
-
     public static synchronized NoteDatabase getInstance(Context context){
 
         if (instanse == null){
@@ -23,7 +22,6 @@ public abstract class NoteDatabase extends RoomDatabase {
                     .addCallback(roomCallback)
                     .build();
         }
-
         return instanse;
     }
 

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ShopExample</string>
     <string name="ok">ok</string>
+    <string name="recycler_scroll_position_key">scroll_position_key</string>
 </resources>

@@ -1,9 +1,12 @@
 package com.htw.shopexample.ui;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Bundle;
+
 import com.htw.shopexample.NoteViewModel;
 import com.htw.shopexample.R;
 import com.htw.shopexample.adapter.HistoryAdapter;

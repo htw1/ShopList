@@ -1,9 +1,12 @@
 package com.htw.shopexample.db;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
 import com.htw.shopexample.util.TimestampConverter;
+
 import java.util.Date;
 
 @Entity(tableName = "note_table")
@@ -18,6 +21,12 @@ public class Note {
 
     private int priority;
 
+    private boolean markedTask;
+
+    public boolean isMarkedTask() {
+        return markedTask;
+    }
+
     public Date getCreateDate() {
         return createDate;
     }
@@ -26,16 +35,17 @@ public class Note {
     @TypeConverters({TimestampConverter.class})
     private Date createDate;
 
-
-    public Note(String title, String desc, int priority, Date createDate ) {
+    public Note(String title, String desc, int priority, Date createDate, boolean markedTask) {
         this.title = title;
         this.desc = desc;
         this.priority = priority;
         this.createDate = createDate;
+        this.markedTask = markedTask;
     }
 
-
-    public void setId(int id) { this.id = id; }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;

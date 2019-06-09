@@ -1,4 +1,5 @@
 package com.htw.shopexample;
+
 import android.app.Application;
 
 import androidx.annotation.NonNull;
@@ -14,12 +15,11 @@ public class NoteViewModel extends AndroidViewModel {
 
     private NoteRepository repository;
     private LiveData<List<Note>> allNotes;
+    private LiveData<List<Note>> allSortedNotes;
 
     public LiveData<List<Note>> getAllSortedNotes() {
         return allSortedNotes;
     }
-
-    private LiveData<List<Note>> allSortedNotes;
 
     public NoteViewModel(@NonNull Application application) {
         super(application);
@@ -28,26 +28,25 @@ public class NoteViewModel extends AndroidViewModel {
         allSortedNotes = repository.getAllNotesSorted();
     }
 
-    public void insert (Note note){
+    public void insert(Note note) {
         repository.insert(note);
     }
 
-    public void delete (Note note){
+    public void delete(Note note) {
         repository.delete(note);
     }
 
-    public void update (Note note){
-        repository.update(note);
+    public void update(int iD, boolean isMarked) {
+        repository.update(iD, isMarked);
     }
 
-    public void deleteAllNotes (){
+    public void deleteAllNotes() {
         repository.getAllNotes();
     }
 
-    public LiveData <List<Note>> getAllNotes (){
+    public LiveData<List<Note>> getAllNotes() {
         return allNotes;
     }
-
 
 }
 

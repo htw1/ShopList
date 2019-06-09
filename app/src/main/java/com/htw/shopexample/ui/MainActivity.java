@@ -1,4 +1,5 @@
 package com.htw.shopexample.ui;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -13,51 +14,38 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.htw.shopexample.db.Note;
 import com.htw.shopexample.NoteViewModel;
 import com.htw.shopexample.R;
 import com.htw.shopexample.adapter.MainAdapter;
+
 import java.util.Date;
+import java.util.List;
+
 import it.sephiroth.android.library.numberpicker.NumberPicker;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-public class MainActivity extends AppCompatActivity   {
+public class MainActivity extends AppCompatActivity {
 
     private NoteViewModel noteViewModel;
     private NumberPicker numberpicker;
+    private ItemTouchHelper ItemTouchHelper;
 
-    public static int index = -1;
-    public static int top = -1;
+    List<Note> noteList;
+
     LinearLayoutManager layoutManager;
     RecyclerView recyclerView;
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //read current recyclerview position
-        index = layoutManager.findFirstVisibleItemPosition();
-        View v = recyclerView.getChildAt(0);
-        top = (v == null) ? 0 : (v.getTop() - recyclerView.getPaddingTop());
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        //set recyclerview position
-        if(index != -1)
-        {
-            layoutManager.scrollToPositionWithOffset( index, top);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +57,6 @@ public class MainActivity extends AppCompatActivity   {
         //RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(this);
-
         recyclerView.setLayoutManager((layoutManager));
         recyclerView.setHasFixedSize(true);
 
@@ -85,14 +72,13 @@ public class MainActivity extends AppCompatActivity   {
         });
 
         noteViewModel.getAllNotes().observe(this, notes -> {
-
-            adapter.setNotes(notes);
+            noteList = notes;
+            adapter.submitList(notes);
             adapter.notifyDataSetChanged();
-
         });
 
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+        ItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
@@ -102,15 +88,17 @@ public class MainActivity extends AppCompatActivity   {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
                 if (direction == ItemTouchHelper.RIGHT) {
+
                     Toast.makeText(MainActivity.this, "Delete", Toast.LENGTH_SHORT).show();
                     noteViewModel.delete(adapter.getNotePossition(viewHolder.getAdapterPosition()));
+
                 } else if (direction == ItemTouchHelper.LEFT) {
 
                     viewHolder.itemView.setBackgroundColor(Color.parseColor("#00e676"));
-                    adapter.notifyDataSetChanged();
+                    noteViewModel.update(noteList.get(viewHolder.getLayoutPosition()).getId(), true);
 
+                    adapter.notifyDataSetChanged();
                 }
             }
 
@@ -127,8 +115,8 @@ public class MainActivity extends AppCompatActivity   {
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
             }
-        }).attachToRecyclerView(recyclerView);
-
+        });
+        ItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -176,14 +164,11 @@ public class MainActivity extends AppCompatActivity   {
                 }
 
                 Date date = new Date();
-                Note note = new Note(savedShopItem, savedShopDesc, quantity, date);
+                Note note = new Note(savedShopItem, savedShopDesc, quantity, date, false);
                 noteViewModel.insert(note);
                 dialog.dismiss();
             });
-
-
             dialog.show();
-
         }
     }
 

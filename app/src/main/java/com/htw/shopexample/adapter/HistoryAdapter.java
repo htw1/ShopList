@@ -1,10 +1,14 @@
 package com.htw.shopexample.adapter;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.htw.shopexample.R;
 import com.htw.shopexample.db.Note;
 
@@ -13,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.NoteHolder>  {
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.NoteHolder> {
 
     private List<Note> notes = new ArrayList<>();
 
@@ -21,7 +25,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.NoteHold
     @Override
     public NoteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.note_item_history, parent,false);
+                .inflate(R.layout.note_item_history, parent, false);
         return new NoteHolder(itemView);
     }
 
@@ -32,7 +36,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.NoteHold
         //Date format
         SimpleDateFormat myFormat = new SimpleDateFormat("EEEE,  d MMMM, HH:mm");
         Date date = currentNote.getCreateDate();
-        String outputDateStr =myFormat.format(date);
+        String outputDateStr = myFormat.format(date);
 
         holder.title.setText(currentNote.getTitle());
         holder.date.setText(outputDateStr);
@@ -45,28 +49,28 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.NoteHold
         return notes.size();
     }
 
-    public void setNotes (List<Note> notes){
+    public void setNotes(List<Note> notes) {
 
         this.notes = notes;
         notifyDataSetChanged();
     }
 
-    public Note getNotePossition (int possition){
+    public Note getNotePossition(int possition) {
         return notes.get(possition);
     }
 
-    class NoteHolder extends RecyclerView.ViewHolder{
+    class NoteHolder extends RecyclerView.ViewHolder {
 
         private TextView title;
         private TextView date;
         private TextView priority;
+
 
         public NoteHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.text_view_title);
             date = itemView.findViewById(R.id.text_view_description);
             priority = itemView.findViewById(R.id.text_view_priority);
-
         }
     }
 
