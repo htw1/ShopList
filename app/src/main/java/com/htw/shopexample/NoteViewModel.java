@@ -39,7 +39,7 @@ public class NoteViewModel extends AndroidViewModel {
     public void update(int iD, boolean isMarked) {
         repository.update(iD, isMarked);
     }
-
+    //TODO
     public void deleteAllNotes() {
         repository.getAllNotes();
     }

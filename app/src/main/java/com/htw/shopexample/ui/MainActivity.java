@@ -44,10 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private NumberPicker numberpicker;
     private ItemTouchHelper ItemTouchHelper;
 
-    List<Note> noteList;
-
-    LinearLayoutManager layoutManager;
-    RecyclerView recyclerView;
+    private List<Note> noteList;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +54,14 @@ public class MainActivity extends AppCompatActivity {
 
         noteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
 
-        //RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager((layoutManager));
+        recyclerView.setLayoutManager((new LinearLayoutManager(this)));
         recyclerView.setHasFixedSize(true);
 
         MainAdapter adapter = new MainAdapter();
 
         recyclerView.getRecycledViewPool().setMaxRecycledViews(TYPE_CAROUSEL, 0);
         recyclerView.setAdapter(adapter);
-
 
         FloatingActionButton myFab = findViewById(R.id.button_add);
         myFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
@@ -79,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         noteViewModel.getAllNotes().observe(this, notes -> {
+
             noteList = notes;
             adapter.submitList(notes);
             adapter.notifyDataSetChanged();
@@ -94,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
                 if (direction == ItemTouchHelper.RIGHT) {
 
                     noteViewModel.delete(noteList.get(viewHolder.getLayoutPosition()));
@@ -127,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.archived_list_menu, menu);
         return true;
@@ -140,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         return false;
 
     }
-
 
     public class ViewDialog {
 

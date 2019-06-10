@@ -14,6 +14,7 @@
 
         <TextView
             android:gravity="center"
+            android:textColor="@color/black_material_800"
             android:id="@+id/text_view_priority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,6 +24,7 @@
 
         <TextView
             android:id="@+id/text_view_title"
+            android:textColor="@color/black_material_800"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -34,6 +36,7 @@
 
         <TextView
             android:id="@+id/text_view_description"
+            android:textColor="@color/black_material_700"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_view_title"
