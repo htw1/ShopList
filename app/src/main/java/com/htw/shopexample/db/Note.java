@@ -23,6 +23,10 @@ public class Note {
 
     private boolean markedTask;
 
+    public void setMarkedTask(boolean markedTask) {
+        this.markedTask = markedTask;
+    }
+
     public boolean isMarkedTask() {
         return markedTask;
     }

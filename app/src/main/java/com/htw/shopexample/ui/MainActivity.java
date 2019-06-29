@@ -3,6 +3,8 @@ package com.htw.shopexample.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,10 +22,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.htw.shopexample.db.Note;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Note> noteList;
     private RecyclerView recyclerView;
+    MainAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +57,16 @@ public class MainActivity extends AppCompatActivity {
 
         noteViewModel = ViewModelProviders.of(this).get(NoteViewModel.class);
 
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager((new LinearLayoutManager(this)));
         recyclerView.setHasFixedSize(true);
 
-        MainAdapter adapter = new MainAdapter();
+        adapter = new MainAdapter();
 
         recyclerView.getRecycledViewPool().setMaxRecycledViews(TYPE_CAROUSEL, 0);
         recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         FloatingActionButton myFab = findViewById(R.id.button_add);
         myFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.colorAccent)));
@@ -73,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        noteViewModel.getAllNotes().observe(this, notes -> {
 
+        noteViewModel.getAllNotes().observe(this, notes -> {
             noteList = notes;
             adapter.submitList(notes);
             adapter.notifyDataSetChanged();
@@ -91,18 +96,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
-                if (direction == ItemTouchHelper.RIGHT) {
 
+
+                if (direction == ItemTouchHelper.RIGHT) {
                     noteViewModel.delete(noteList.get(viewHolder.getLayoutPosition()));
-                    Toast.makeText(MainActivity.this, "Delete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.delete), Toast.LENGTH_SHORT).show();
 
                 } else if (direction == ItemTouchHelper.LEFT) {
-
                     noteViewModel.update(noteList.get(viewHolder.getLayoutPosition()).getId(), true);
-                    adapter.getNotePossition(viewHolder.getAdapterPosition()).isMarkedTask();
-                    viewHolder.itemView.setBackgroundColor(Color.parseColor("#00e676"));
-                    adapter.notifyDataSetChanged();
+                    noteViewModel.getAllNotes().getValue().get(viewHolder.getLayoutPosition()).setMarkedTask(true);
                 }
+
             }
 
             @Override
@@ -118,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
 
             }
+
         });
         ItemTouchHelper.attachToRecyclerView(recyclerView);
     }
@@ -163,15 +168,16 @@ public class MainActivity extends AppCompatActivity {
                 int quantity = numberpicker.getProgress();
 
                 if (savedShopItem.trim().isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Enter Product Name", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.enter_product_name), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                Date date = new Date();
-                Note note = new Note(savedShopItem, savedShopDesc, quantity, date, false);
+                Note note = new Note(savedShopItem, savedShopDesc, quantity, new Date(), false);
                 noteViewModel.insert(note);
+
                 dialog.dismiss();
             });
+
             dialog.show();
         }
     }

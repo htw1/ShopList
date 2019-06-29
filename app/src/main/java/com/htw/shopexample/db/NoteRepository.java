@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
+import com.htw.shopexample.util.RefreshLiveData;
+
 import java.util.List;
 
 public class NoteRepository {
@@ -12,14 +14,7 @@ public class NoteRepository {
     private NoteDao noteDao;
     private LiveData<List<Note>> allNotes;
     private LiveData<List<Note>> allNotesSorted;
-
-    public LiveData<List<Note>> getMaketNotes() {
-        return maketNotes;
-    }
-
-    private LiveData<List<Note>> maketNotes;
-
-    public LiveData<List<Note>> getAllNotesSorted() {
+    public  LiveData<List<Note>> getAllNotesSorted() {
         return allNotesSorted;
     }
 
@@ -32,6 +27,7 @@ public class NoteRepository {
         allNotesSorted = noteDao.getAllNotesSorted();
 
     }
+
 
     public void insert(Note note) {
         new insertNoteAsynTask(noteDao).execute(note);

@@ -17,12 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.htw.shopexample.R;
 import com.htw.shopexample.db.Note;
 
+import java.util.List;
+
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
 
 public class MainAdapter extends ListAdapter<Note, MainAdapter.NoteHolder> {
 
-    public MainAdapter(@NonNull AsyncDifferConfig<Note> config, boolean isMarked) {
+    public MainAdapter(@NonNull AsyncDifferConfig<Note> config) {
         super(config);
-
     }
 
     public MainAdapter() {
@@ -30,7 +33,9 @@ public class MainAdapter extends ListAdapter<Note, MainAdapter.NoteHolder> {
     }
 
 
-    private static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK = new DiffUtil.ItemCallback<Note>() {
+
+    private static final DiffUtil.ItemCallback<Note> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Note>() {
         @Override
         public boolean areItemsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
 
@@ -44,6 +49,8 @@ public class MainAdapter extends ListAdapter<Note, MainAdapter.NoteHolder> {
                     oldItem.getDesc().equals(newItem.getDesc()) &&
                     oldItem.getPriority() == newItem.getPriority();
         }
+
+
     };
 
     @NonNull
@@ -58,11 +65,16 @@ public class MainAdapter extends ListAdapter<Note, MainAdapter.NoteHolder> {
     public void onBindViewHolder(@NonNull NoteHolder holder, int position) {
 
         Note currentNote = getItem(position);
-        holder.title.setText(currentNote.getTitle());
-        holder.desc.setText(currentNote.getDesc());
-        holder.priority.setText(String.valueOf(currentNote.getPriority()));
 
-        if (getNotePossition(position).isMarkedTask() == true) {
+
+/*            holder.title.setTextColor(Color.parseColor("#000000"));
+            holder.desc.setTextColor(Color.parseColor("#000000"));
+            holder.priority.setTextColor(Color.parseColor("#000000"));*/
+            holder.title.setText(currentNote.getTitle());
+            holder.desc.setText(currentNote.getDesc());
+            holder.priority.setText(String.valueOf(currentNote.getPriority()));
+
+          if (getCurrentList().get(position).isMarkedTask() == true) {
             holder.cardView.setCardBackgroundColor(Color.parseColor("#00e676"));
             holder.title.setTextColor(Color.parseColor("#ffffff"));
             holder.desc.setTextColor(Color.parseColor("#ffffff"));
@@ -91,5 +103,9 @@ public class MainAdapter extends ListAdapter<Note, MainAdapter.NoteHolder> {
             cardView = itemView.findViewById(R.id.card_view);
         }
     }
+
+
+
+
 
 }

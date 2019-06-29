@@ -12,6 +12,9 @@ import android.os.Bundle;
 import com.htw.shopexample.NoteViewModel;
 import com.htw.shopexample.R;
 import com.htw.shopexample.adapter.HistoryAdapter;
+import com.htw.shopexample.db.Note;
+
+import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -36,7 +39,7 @@ public class HistoryActivity extends AppCompatActivity {
         HistoryAdapter adapter = new HistoryAdapter();
         recyclerView.setAdapter(adapter);
 
-        noteViewModel.getAllSortedNotes().observe(this, notes -> {
+        noteViewModel.getAllSortedNotes().observe(this, (List<Note> notes) -> {
             adapter.setNotes(notes);
             adapter.notifyDataSetChanged();
         });
