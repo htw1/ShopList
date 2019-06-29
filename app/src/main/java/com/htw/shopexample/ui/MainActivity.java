@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
@@ -176,9 +177,11 @@ public class MainActivity extends AppCompatActivity {
                 noteViewModel.insert(note);
 
                 dialog.dismiss();
-            });
 
+            });
+            dialog.setCancelable(true);
             dialog.show();
+
         }
     }
 

@@ -5,8 +5,6 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.htw.shopexample.util.RefreshLiveData;
-
 import java.util.List;
 
 public class NoteRepository {

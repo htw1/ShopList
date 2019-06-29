@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.htw.shopexample.R;
 import com.htw.shopexample.db.Note;
+import com.htw.shopexample.util.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.NoteHold
 
         Note currentNote = notes.get(position);
         //Date format
-        SimpleDateFormat myFormat = new SimpleDateFormat("EEEE,  d MMMM, HH:mm");
+        SimpleDateFormat myFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
         Date date = currentNote.getCreateDate();
         String outputDateStr = myFormat.format(date);
 
@@ -64,7 +65,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.NoteHold
         private TextView title;
         private TextView date;
         private TextView priority;
-
 
         public NoteHolder(@NonNull View itemView) {
             super(itemView);

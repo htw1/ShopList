@@ -5,12 +5,9 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 
 import com.htw.shopexample.db.Note;
-import com.htw.shopexample.db.NoteDao;
 import com.htw.shopexample.db.NoteRepository;
-import com.htw.shopexample.util.RefreshLiveData;
 
 import java.util.List;
 
