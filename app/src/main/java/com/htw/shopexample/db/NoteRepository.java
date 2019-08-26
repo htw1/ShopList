@@ -12,9 +12,15 @@ public class NoteRepository {
     private NoteDao noteDao;
     private LiveData<List<Note>> allNotes;
     private LiveData<List<Note>> allNotesSorted;
+    private LiveData<List<Note>> userSortedDateNotes;
+
     public  LiveData<List<Note>> getAllNotesSorted() {
         return allNotesSorted;
     }
+    public  LiveData<List<Note>> getUserSortedDateNotes() {
+        return userSortedDateNotes;
+    }
+
 
     public NoteRepository(Application application) {
         super();
@@ -23,7 +29,7 @@ public class NoteRepository {
         noteDao = database.noteDao();
         allNotes = noteDao.getAllNotes("-1 day");
         allNotesSorted = noteDao.getAllNotesSorted();
-
+        userSortedDateNotes = noteDao.getUserDateSortedNotes("");
     }
 
 

@@ -30,6 +30,9 @@ public interface NoteDao {
     @Query("SELECT * FROM note_table WHERE created_date>=datetime ('now', :duration ) ORDER BY priority DESC ")
     LiveData<List<Note>> getAllNotes(String duration);
 
+    @Query("SELECT * from note_table where created_date=Date(:date)")
+    LiveData<List<Note>> getUserDateSortedNotes(String date);
+
     @Query("SELECT * FROM note_table ORDER BY created_date DESC ")
     LiveData<List<Note>> getAllNotesSorted();
 

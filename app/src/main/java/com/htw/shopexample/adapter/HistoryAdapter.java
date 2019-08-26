@@ -1,5 +1,6 @@
 package com.htw.shopexample.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.NoteHold
         SimpleDateFormat myFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
         Date date = currentNote.getCreateDate();
         String outputDateStr = myFormat.format(date);
-
+        Log.v("date",currentNote.getCreateDate().toString() );
         holder.title.setText(currentNote.getTitle());
         holder.date.setText(outputDateStr);
         holder.priority.setText(String.valueOf(currentNote.getPriority()));
